@@ -32,10 +32,10 @@ const Navigation = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16 min-w-0">
           {/* Logo */}
-          <Link to="/" className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
+          <Link to="/" className="text-lg sm:text-xl font-bold gradient-primary bg-clip-text text-transparent flex-shrink-0">
             Zoe.dev
           </Link>
 
