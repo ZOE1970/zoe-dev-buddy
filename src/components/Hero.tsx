@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Code, Download } from "lucide-react";
+import { ChevronDown, Code } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -34,9 +35,11 @@ const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6">
-              <Button variant="premium" size="lg" className="group" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
-                <Code className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                View My Work
+              <Button variant="premium" size="lg" className="group" asChild>
+                <Link to="/works">
+                  <Code className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  View My Work
+                </Link>
               </Button>
               <Button variant="contact" size="lg">
                 Get In Touch
