@@ -34,9 +34,9 @@ const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6">
-              <Button variant="premium" size="lg" className="group">
-                <Download className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                Download CV
+              <Button variant="premium" size="lg" className="group" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
+                <Code className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                View My Work
               </Button>
               <Button variant="contact" size="lg">
                 Get In Touch
