@@ -1,8 +1,44 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, MessageCircle, Send } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  message: z.string().trim().min(1, "Message is required").max(1000, "Message must be less than 1000 characters")
+});
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<z.infer<typeof contactSchema>>({
+    resolver: zodResolver(contactSchema)
+  });
+
+  const onSubmit = async (data: z.infer<typeof contactSchema>) => {
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    toast({
+      title: "Message sent!",
+      description: "Thanks for reaching out. I'll get back to you soon!",
+    });
+    
+    reset();
+    setIsSubmitting(false);
+  };
+
   const contactMethods = [
     {
       icon: Phone,
@@ -67,12 +103,61 @@ const Contact = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <Button variant="premium" size="xl" className="group">
-            <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            Start a Project
-          </Button>
-        </div>
+        <Card className="max-w-2xl mx-auto mt-12 p-8 bg-secondary/30 border-secondary/50">
+          <h3 className="text-2xl font-bold mb-6 text-center">Send Me a Message</h3>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div>
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                placeholder="Your name"
+                {...register("name")}
+                className="mt-2"
+              />
+              {errors.name && (
+                <p className="text-sm text-destructive mt-1">{errors.name.message}</p>
+              )}
+            </div>
+            
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your.email@example.com"
+                {...register("email")}
+                className="mt-2"
+              />
+              {errors.email && (
+                <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
+              )}
+            </div>
+            
+            <div>
+              <Label htmlFor="message">Message</Label>
+              <Textarea
+                id="message"
+                placeholder="Tell me about your project..."
+                {...register("message")}
+                className="mt-2 min-h-[150px]"
+              />
+              {errors.message && (
+                <p className="text-sm text-destructive mt-1">{errors.message.message}</p>
+              )}
+            </div>
+            
+            <Button 
+              type="submit" 
+              variant="premium" 
+              size="lg" 
+              className="w-full group"
+              disabled={isSubmitting}
+            >
+              <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </Button>
+          </form>
+        </Card>
 
         <div className="mt-16 text-center">
           <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
